@@ -37,10 +37,11 @@ func updateWeatherData(city string) {
 	}
 }
 
-func httpServer() {
+func httpServer(city string) {
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprint(w, fmt.Sprintf(
-			"Temperature: %s; Visibility: %s; Humidity: %s; Pressure: %s;",
+			"City: %s; Temperature: %s; Visibility: %s; Humidity: %s; Pressure: %s;",
+			city,
 			lastWeather.Current[0].Temperature,
 			lastWeather.Current[0].Visibility,
 			lastWeather.Current[0].Humidity,
@@ -50,6 +51,7 @@ func httpServer() {
 }
 
 func main() {
-	go updateWeatherData("Kiev")
-	httpServer()
+	var city string = "Боярка"
+	go updateWeatherData(city)
+	httpServer(city)
 }
