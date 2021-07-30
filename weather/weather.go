@@ -9,6 +9,8 @@ import (
 	"time"
 )
 
+var lastWeather Weather
+
 type Weather struct {
 	Current [1]CurrentCondition `json:"current_condition"`
 }
@@ -20,20 +22,21 @@ type CurrentCondition struct {
 	Pressure    string `json:"pressure"`
 }
 
-var lastWeather Weather
-
 func updateWeatherData(city string) {
 	for {
 		response, err := http.Get(fmt.Sprintf("https://www.wttr.in/%s?format=j1", city))
 		if err != nil {
-			log.Fatal(err)
+			log.Print(err)
+			time.Sleep(10 * time.Second)
+		} else {
+			responseData, err := ioutil.ReadAll(response.Body)
+			if err != nil {
+				log.Print(err)
+			} else {
+				json.Unmarshal(responseData, &lastWeather)
+			}
+			time.Sleep(5 * time.Minute)
 		}
-		responseData, err := ioutil.ReadAll(response.Body)
-		if err != nil {
-			log.Fatal(err)
-		}
-		json.Unmarshal(responseData, &lastWeather)
-		time.Sleep(5 * time.Minute)
 	}
 }
 
