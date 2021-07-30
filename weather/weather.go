@@ -9,6 +9,8 @@ import (
 	"time"
 )
 
+var city string = "Боярка"
+
 type Weather struct {
 	Current [1]CurrentCondition `json:"current_condition"`
 }
@@ -54,7 +56,6 @@ func httpServer(city string) {
 }
 
 func main() {
-	var city string = "Боярка"
 	go updateWeatherData(city)
 	httpServer(city)
 }
