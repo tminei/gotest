@@ -9,8 +9,6 @@ import (
 	"time"
 )
 
-var lastWeather Weather
-
 type Weather struct {
 	Current [1]CurrentCondition `json:"current_condition"`
 }
@@ -21,6 +19,8 @@ type CurrentCondition struct {
 	Humidity    string `json:"humidity"`
 	Pressure    string `json:"pressure"`
 }
+
+var lastWeather Weather
 
 func updateWeatherData(city string) {
 	for {
